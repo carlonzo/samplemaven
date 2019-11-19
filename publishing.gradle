@@ -1,0 +1,52 @@
+apply plugin: 'maven-publish'
+
+//project.afterEvaluate {
+//    // workaround for https://github.com/gradle/gradle/issues/11116
+//    // should be fixed in AGP 3.6.0-beta05
+//    components
+//            .findAll { it instanceof AdhocComponentWithVariants }
+//            .forEach {
+//                it.withVariantsFromConfiguration(configurations.findByName("${it.name}ApiPublication")) {
+//                    if (configurationVariant.artifacts.isEmpty()) {
+//                        skip()
+//                    }
+//                }
+//                it.withVariantsFromConfiguration(configurations.findByName("${it.name}RuntimePublication")) {
+//                    if (configurationVariant.artifacts.isEmpty()) {
+//                        skip()
+//                    }
+//                }
+//            }
+//}
+
+project.afterEvaluate {
+
+    version "1.0.0"
+    group "com.sample"
+
+    publishing {
+        publications {
+
+            debug(MavenPublication) {
+                from components.debug
+
+                groupId = group
+                artifactId = "${project.getName()}-debug"
+            }
+
+            release(MavenPublication) {
+                from components.release
+
+                groupId = group
+                artifactId = project.getName()
+            }
+        }
+
+        repositories {
+            maven {
+                // blablabla
+            }
+        }
+    }
+
+}
